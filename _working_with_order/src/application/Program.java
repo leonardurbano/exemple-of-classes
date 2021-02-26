@@ -15,47 +15,46 @@ import entities.enums.OrderStatus;
 public class Program {
 
 	public static void main(String[] args) throws ParseException {
+
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-		System.out.println("Enter client data:");
+		System.out.println("Enter cliente data:");
 		System.out.print("Name: ");
 		String nameClient = sc.nextLine();
 		System.out.print("Email: ");
-		String email = sc.nextLine();
-		System.out.print("Birth date (DD/MM/YYYY): ");
-		String birthDate = sc.nextLine();
-		Client client = new Client(nameClient, email, sdf.parse(birthDate));
+		String emailClient = sc.nextLine();
+		System.out.print("Birth date (DD/MM/YYYY):");
+		Date birthDate = sdf.parse(sc.next());
 
+		sc.nextLine();
 		System.out.println("Enter order data:");
-
 		System.out.print("Status: ");
 		String status = sc.nextLine();
-		Order o = new Order(new Date(), OrderStatus.valueOf(status), client);
+
+		Order order = new Order(new Date(), OrderStatus.valueOf(status), new Client(nameClient, emailClient, birthDate));
 
 		System.out.print("How many items to this order? ");
-		int numberOrderItem = sc.nextInt();
-		
-		
-		for (int i = 1; i <= numberOrderItem; i++) {
+		int n = sc.nextInt();
+
+		for (int i = 1; i <= n; i++) {
 			sc.nextLine();
-			System.out.println("Enter #"+i+" item data:");
+			System.out.println("Enter #" + i + " item data:");
 			System.out.print("Product name: ");
 			String nameProduct = sc.nextLine();
 			System.out.print("Product price: ");
 			double priceProduct = sc.nextDouble();
-			Product product = new Product(nameProduct, priceProduct);
-			
-			System.out.print("Quantity: ");			
-			int quantity = sc.nextInt();
-			OrderItem item = new OrderItem(quantity, priceProduct, product);
-			
-			o.addItem(item);
+			System.out.print("Quantity: ");
+			int quantityProduct = sc.nextInt();
+			order.addItem(new OrderItem(quantityProduct, priceProduct, new Product(nameProduct, priceProduct)));
 		}
-		
-		System.out.println(o);
+
+		System.out.println();
+
+		System.out.println(order);
 
 		sc.close();
 	}
+
 }
